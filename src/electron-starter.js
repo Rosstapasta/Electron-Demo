@@ -7,33 +7,33 @@ const {app, BrowserWindow} = electron
 let mainWindow
 
 function createWindow () {
-  // Create the browser window.
+  // Function that we call when electron is finished initializing, that makes our application window.
   mainWindow = new BrowserWindow({
     width: 800, 
     height: 600
   })
 
-  // and load the index.html of the app.
+  // The URL that you want the Browser Window to open when electron finishes intializing.
   mainWindow.loadURL('http://localhost:3000')
 
-  // Open the DevTools.
+  // This is optional code that will open the dev tools automatically when the browser window opens.
   // mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
+    //The .on is a listener, and it takes in two arguments
+    //The first is a string of what it's waiting for. In this case, it's closed. So, when it's closed, it runs the function
+    //This function initializes mainWindow as null. So it closes out of the window.
     mainWindow = null
   })
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
+//This is another .on connected to app which we destructured off of electron.
+//This one waits for the app to be ready, when it's all loaded and done initializing, it runs the creaate window function
 app.on('ready', createWindow)
 
-// Quit when all windows are closed.
+//Another .on that waits for all windows to be closed. If you have your app built so that multiple windows open up, 
+//It will wait for all of the windows to be closed until it quits the npm run electron
 app.on('window-all-closed', function () {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
@@ -43,12 +43,10 @@ app.on('window-all-closed', function () {
 })
 
 app.on('activate', function () {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
+  //This is used if your app is ready for production, and people can download it onto their computers
+  //When they click on it, it's activated
+  //this .on waits for it to activate, and then it runs createWindow if the mainWindow is not already running
   if (mainWindow === null) {
     createWindow()
   }
 })
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
